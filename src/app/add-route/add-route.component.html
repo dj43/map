@@ -1,0 +1,44 @@
+<div>
+
+  <form [formGroup]="routeForm" novalidate>
+
+    <p>
+      <label for="name">Name </label>
+      <input type="text" id="name" name="name" formControlName="name">
+    </p>
+
+    <p>
+      <label for="direction">Direction</label>
+      <input type="text" id="direction" name="direction" formControlName="direction">
+    </p>
+
+    <p>
+      <label for="status">Status</label>
+      <input type="text" id="status" name="status" formControlName="status">
+    </p>
+
+    <mat-form-field class="example-chip-list" appearance="fill">
+      <mat-chip-list #chipList aria-label="Fruit selection">
+        <mat-chip *ngFor="let stop of stops; let i = index" (removed)="remove(stop)">
+          {{stop.name}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input placeholder="New Stop..." #fruitInput [matAutocomplete]="auto" [ngModel]="stop"
+          [ngModelOptions]="{standalone: true}" [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let stop of stopsList; let i = index" [value]="stop.id" (click)="add(i)">
+          {{stop.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <p>
+      <button type="button" (click)="addRoute()">Submit</button>
+    </p>
+
+  </form>
+</div>
