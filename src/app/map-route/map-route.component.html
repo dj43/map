@@ -1,6 +1,6 @@
 <google-map width="100%" height="100vh" [options]="options">
-  <ng-container *ngFor="let direction of directionsResults$">
-    <map-directions-renderer  *ngIf="(direction | async) as directionsResults" [directions]="directionsResults">
+  <ng-container *ngFor="let direction of directionsResults$; let i = index">
+    <map-directions-renderer [options]="directionOptions[i]" *ngIf="(direction | async) as directionsResults" [directions]="directionsResults">
     </map-directions-renderer>
   </ng-container>
 </google-map>

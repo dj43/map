@@ -11,6 +11,7 @@ import { Route } from '../models/route.model';
 })
 export class MapRouteComponent implements OnInit {
   @Input() routes: Route[] = [];
+  letters = '0123456789ABCDEF';
 
   zoom: number = 8;
   directionsResults$: Observable<google.maps.DirectionsResult | undefined>[] =
@@ -18,9 +19,15 @@ export class MapRouteComponent implements OnInit {
   options: google.maps.MapOptions = {};
 
   constructor(private mapDirectionsService: MapDirectionsService) {}
+  directionOptions:google.maps.DirectionsRendererOptions[]  = []
+
 
   mapRoute() {
     this.routes.forEach((route, index) => {
+
+      this.directionOptions.push({
+        polylineOptions: { strokeColor: this.getRandomColor() },
+      });
       if (route && route.stops?.length > 1) {
         let waypoints: google.maps.DirectionsWaypoint[] = [];
         if (route.stops.length > 2) {
@@ -44,6 +51,7 @@ export class MapRouteComponent implements OnInit {
             lat: +route.stops[0].latitude,
             lng: +route.stops[0].longitude,
           },
+
           travelMode: google.maps.TravelMode.DRIVING,
         };
 
@@ -62,6 +70,14 @@ export class MapRouteComponent implements OnInit {
         };
       }
     });
+  }
+
+  getRandomColor(): string {
+    let color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += this.letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   ngOnChanges(changes: SimpleChanges) {
